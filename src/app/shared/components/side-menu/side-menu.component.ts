@@ -15,10 +15,22 @@ const reactiveItems = reactiveRoutes[0].children ?? [];
   templateUrl: './side-menu.component.html',
 })
 export class SideMenuComponent {
+
   activeMenu: MenuItem[] = reactiveItems
   .filter(item => item.title !== undefined)
   .map((item) => ({
     route: `reactive/${item.path}`,
     title: `${item.title}`,
   }));
+
+ authMenu: MenuItem[] = [{
+  title: 'Registro',
+  route: './auth'
+ }]
+
+ countryMenu: MenuItem[] = [{
+   title: 'Países',
+   route: './country'
+ }];
+
 }
