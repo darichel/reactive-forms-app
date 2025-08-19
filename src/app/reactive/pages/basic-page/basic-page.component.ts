@@ -1,6 +1,7 @@
 import { JsonPipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormUtils } from '../../../utils/form-utils';
 
 @Component({
   selector: 'app-basic-page',
@@ -10,6 +11,7 @@ import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } 
 export class BasicPageComponent {
 
   private fb = inject(FormBuilder);
+  formUtils = FormUtils;
 
   myForm: FormGroup = this.fb.group({
     name: ['', [Validators.required, Validators.minLength(3)]/** Validadores sincronos */, /**Validadores asincronos */],
@@ -23,6 +25,7 @@ export class BasicPageComponent {
     inStorage: new FormControl(0)
   }); */
 
+  /* Llevadas a una clase para utilizar de forma global
   isValidField(field: string): boolean | null {
     return !!this.myForm.controls[field].errors && this.myForm.controls[field].touched;
   }
@@ -33,7 +36,7 @@ export class BasicPageComponent {
     if (errors?.['minlength']) return 'El mínimo es de 3 caracteres.';
     if (errors?.['min']) return 'El valor mínimo es 0.';
     return null;
-  }
+  } */
 
   onSave(): void {
     if (this.myForm.invalid) {

@@ -15,11 +15,11 @@
             formControlName="name"
           />
 
-          @if (isValidField('name')) {
-            <span class="form-text text-danger">
-              <!-- Debe de ser de 3 letras -->
-              {{ getFieldError('name') }}
-            </span>
+          @if (formUtils.isValidField(myForm, 'name')) {
+          <span class="form-text text-danger">
+            <!-- Debe de ser de 3 letras -->
+            {{ formUtils.getFieldError(myForm, "name") }}
+          </span>
           }
         </div>
       </div>
@@ -34,11 +34,11 @@
             placeholder="Precio del producto"
             formControlName="price"
           />
-          @if (isValidField('price')) {
-            <span class="form-text text-danger">
-              <!-- Debe de ser mayor a 0 -->
-              {{ getFieldError('price') }}
-            </span>
+          @if (formUtils.isValidField(myForm, 'price')) {
+          <span class="form-text text-danger">
+            <!-- Debe de ser mayor a 0 -->
+            {{ formUtils.getFieldError(myForm, "price") }}
+          </span>
           }
         </div>
       </div>
@@ -54,11 +54,11 @@
             formControlName="inStorage"
           />
 
-          @if (isValidField('inStorage')) {
-            <span class="form-text text-danger">
-              <!-- Debe de ser 0 o mayor -->
-              {{ getFieldError('inStorage') }}
-            </span>
+          @if (formUtils.isValidField(myForm, 'inStorage')) {
+          <span class="form-text text-danger">
+            <!-- Debe de ser 0 o mayor -->
+            {{ formUtils.getFieldError(myForm, "inStorage") }}
+          </span>
           }
         </div>
       </div>
@@ -89,16 +89,14 @@
     <pre>{{ myForm.value | json }}</pre>
 
     <span>Errores en el form</span>
-    <pre class="mx-2">Name {{ myForm.controls['name'].errors | json }}</pre>
-    <pre class="mx-2">Price {{ myForm.controls['price'].errors | json }}</pre>
-    <pre class="mx-2">
-In Storage {{ myForm.controls['inStorage'].errors | json }}</pre
-    >
+    <pre>Name {{ myForm.controls["name"].errors | json }}</pre>
+    <pre>Price {{ myForm.controls["price"].errors | json }}</pre>
+    <pre>In Storage {{ myForm.controls["inStorage"].errors | json }}</pre>
 
     <span>Precio</span>
-    <pre>{{ myForm.controls['price'].value | json }}</pre>
+    <pre>{{ myForm.controls["price"].value | json }}</pre>
 
     <span>Producto</span>
-    <pre>{{ myForm.controls['name'].value | json }}</pre>
+    <pre>{{ myForm.controls["name"].value | json }}</pre>
   </div>
 </div>
