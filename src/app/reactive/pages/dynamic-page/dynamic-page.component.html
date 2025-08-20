@@ -29,6 +29,7 @@
           placeholder="Agregar favorito"
           [formControl]="newFavorite"
           (keydown.enter)="onAddToFavorites()"
+          (keydown.enter)="$event.preventDefault()"
         />
         <button
           class="btn btn-outline-primary"
