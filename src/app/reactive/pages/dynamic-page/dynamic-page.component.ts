@@ -17,7 +17,11 @@ import { FormUtils } from '../../../utils/form-utils';
 })
 export class DynamicPageComponent {
   private fb = inject(FormBuilder);
-  formUtils = FormUtils;
+  public formUtils = FormUtils;
+  public newFavorite = this.fb.control('', [
+    Validators.required,
+    Validators.minLength(2),
+  ]);
 
   myForm: FormGroup = this.fb.group({
     name: ['', [Validators.required, Validators.minLength(3)]],
@@ -34,7 +38,25 @@ export class DynamicPageComponent {
     return this.myForm.get('favoriteGames') as FormArray;
   }
 
-  /* isValidFieldInArray(formArray: FormArray, index: number) {
-    return formArray.controls[index].errors && formArray.controls[index].touched;
-  } */
+  onAddToFavorites() {
+    if (this.newFavorite.invalid) return;
+    const newGame = this.newFavorite.value;
+
+    this.favoriteGames.push(
+      this.fb.control(newGame, [
+        Validators.required,
+        Validators.minLength(2),
+      ])
+    );
+
+    this.newFavorite.reset();
+  }
+
+  onDeleteFavorite(index: number) {
+    this.favoriteGames.removeAt(index);
+  }
+
+  onSubmit() {
+    this.myForm.markAllAsTouched();
+  }
 }
