@@ -1,4 +1,4 @@
-import { FormArray, FormGroup, ValidationErrors } from '@angular/forms';
+import { AbstractControl, FormArray, FormGroup, ValidationErrors } from '@angular/forms';
 
 export class FormUtils {
   //Expresiones regulares
@@ -32,6 +32,15 @@ export class FormUtils {
     if (formArray.controls.length == 0) return null;
     const errors = formArray.controls[index].errors ?? {};
     return this.getErrorMessage(errors);
+  }
+
+  static isFieldOneEqualFieldTwo(fieldOne: string, fieldTwo: string) {
+    return (formGroup: AbstractControl) => {
+      const field1Value = formGroup.get(fieldOne)?.value;
+      const field2Value = formGroup.get(fieldTwo)?.value;
+
+      return field1Value === field2Value ? null : { fieldsNotEqual: true };
+    }
   }
 
   private static getErrorMessage(errors: ValidationErrors): string | null{

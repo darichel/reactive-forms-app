@@ -1,6 +1,7 @@
 import { JsonPipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import {
+  AbstractControl,
   FormBuilder,
   FormGroup,
   ReactiveFormsModule,
@@ -36,7 +37,11 @@ export class RegisterPageComponent {
     ],
     password: ['', [Validators.required, Validators.minLength(6)]],
     passwordConfirmation: ['', Validators.required],
+  }, {
+    validators: [this.formUtils.isFieldOneEqualFieldTwo('password', 'passwordConfirmation')]
   });
+
+
 
   onSubmit() {
     if (this.myForm.valid) {
