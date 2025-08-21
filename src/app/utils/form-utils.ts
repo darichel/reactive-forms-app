@@ -1,6 +1,10 @@
 import { FormArray, FormGroup, ValidationErrors } from '@angular/forms';
 
 export class FormUtils {
+  //Expresiones regulares
+  static namePattern = '([a-zA-Z]+) ([a-zA-Z]+)';
+  static emailPattern = '^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$';
+  static notOnlySpacesPattern = '^[a-zA-Z0-9]+$';
 
   static isValidField(form: FormGroup, field: string): boolean | null {
     return !!form.controls[field].errors && form.controls[field].touched;
@@ -41,6 +45,11 @@ export class FormUtils {
           return `El valor mínimo es ${errors['min'].min}.`;
         case 'email':
           return 'El formato del email es inválido.';
+        case 'pattern':
+          if (errors['pattern'].requiredPattern === FormUtils.emailPattern) {
+            return `El formato es inválido. Se esperaba: xxx@yyy.zzz`;
+          }
+          return 'El formato es inválido.';
         default:
           return 'Error desconocido.';
       }

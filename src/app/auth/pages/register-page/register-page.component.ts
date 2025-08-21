@@ -1,6 +1,11 @@
 import { JsonPipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { FormUtils } from '../../../utils/form-utils';
 
 @Component({
@@ -9,17 +14,29 @@ import { FormUtils } from '../../../utils/form-utils';
   templateUrl: './register-page.component.html',
 })
 export class RegisterPageComponent {
-
   private fb = inject(FormBuilder);
   public formUtils = FormUtils;
 
-  public myForm : FormGroup = this.fb.group({
-    name: ['', [Validators.required, Validators.minLength(3)]],
-    email: ['', [Validators.required, Validators.email]],
-    username: ['', [Validators.required, Validators.minLength(6)]],
+  public myForm: FormGroup = this.fb.group({
+    name: [
+      '',
+      [Validators.required, Validators.pattern(this.formUtils.namePattern)],
+    ],
+    email: [
+      '',
+      [Validators.required, Validators.pattern(this.formUtils.emailPattern)],
+    ],
+    username: [
+      '',
+      [
+        Validators.required,
+        Validators.minLength(6),
+        Validators.pattern(this.formUtils.notOnlySpacesPattern),
+      ],
+    ],
     password: ['', [Validators.required, Validators.minLength(6)]],
     passwordConfirmation: ['', Validators.required],
-  })
+  });
 
   onSubmit() {
     if (this.myForm.valid) {
