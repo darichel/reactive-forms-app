@@ -72,6 +72,11 @@ export class FormUtils {
     return null;
   }
 
+  static notStrider(control: AbstractControl): ValidationErrors | null {
+    const formValue = control.value;
+    return formValue === 'strider' ? { notStrider: true } : null;
+  }
+
   private static getErrorMessage(errors: ValidationErrors): string | null {
     for (let key of Object.keys(errors)) {
       switch (key) {
@@ -90,6 +95,8 @@ export class FormUtils {
           return 'El formato es inválido.';
         case 'emailTaken':
           return 'El email ya está en uso.';
+        case 'notStrider':
+          return 'El username no puede ser "strider".';
         default:
           return 'Error desconocido.';
       }
