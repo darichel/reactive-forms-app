@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Country } from '../interfaces/country.interface';
-import { Observable, of } from 'rxjs';
+import { combineLatest, Observable, of } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class CountryService {
@@ -26,16 +26,24 @@ export class CountryService {
     return this.http.get<Country[]>(url);
   }
 
-  getCountryByAlphaCode(alphaCode: string): Observable<Country | null> {
-    if (!alphaCode) return of(null);
-    const url = `${this.baseUrl}/alpha/${alphaCode}?fields=cca3,name`;
-    return this.http.get<Country | null>(url);
+  getCountryByAlphaCode(alphaCode: string): Observable<Country> {
+    if (!alphaCode) return of();
+    const url = `${this.baseUrl}/alpha/${alphaCode}?fields=cca3,name,borders`;
+    return this.http.get<Country>(url);
   }
 
-  getCountriesBordersByCode(borders: string[]): Observable<Country[]> {
-    if (!borders || borders.length === 0) return of([]);
-    const url = `${this.baseUrl}/alpha?codes=${borders.join(',')}&fields=cca3,name`;
-    return this.http.get<Country[]>(url);
+  getCountriesBordersByCode(countryCodes: string[]): Observable<Country[]> {
+    if (!countryCodes || countryCodes.length === 0) return of([]);
+
+    const countriesRequests: Observable<Country>[] = []
+
+    countryCodes.forEach((code) => {
+      const request = this.getCountryByAlphaCode(code);
+      countriesRequests.push(request);
+    });
+
+    // Combinar todas las peticiones en un solo observable
+    return combineLatest(countriesRequests)
   }
 
 }
