@@ -1,4 +1,17 @@
-import { AbstractControl, FormArray, FormGroup, ValidationErrors } from '@angular/forms';
+import {
+  AbstractControl,
+  FormArray,
+  FormGroup,
+  ValidationErrors,
+} from '@angular/forms';
+
+async function sleep() {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(true);
+    }, 2500);
+  });
+}
 
 export class FormUtils {
   //Expresiones regulares
@@ -40,10 +53,26 @@ export class FormUtils {
       const field2Value = formGroup.get(fieldTwo)?.value;
 
       return field1Value === field2Value ? null : { fieldsNotEqual: true };
-    }
+    };
   }
 
-  private static getErrorMessage(errors: ValidationErrors): string | null{
+  static async checkingServerResponse(
+    control: AbstractControl
+  ): Promise<ValidationErrors | null> {
+    console.log('Validando email en servidor...');
+
+    await sleep();
+
+    const formValue = control.value;
+
+    if (formValue === 'hola@mundo.com') {
+      return { emailTaken: true };
+    }
+
+    return null;
+  }
+
+  private static getErrorMessage(errors: ValidationErrors): string | null {
     for (let key of Object.keys(errors)) {
       switch (key) {
         case 'required':
@@ -56,9 +85,11 @@ export class FormUtils {
           return 'El formato del email es inválido.';
         case 'pattern':
           if (errors['pattern'].requiredPattern === FormUtils.emailPattern) {
-            return `El formato es inválido. Se esperaba: xxx@yyy.zzz`;
+            return `El formato de email es inválido. Se esperaba: xxx@yyy.zzz`;
           }
           return 'El formato es inválido.';
+        case 'emailTaken':
+          return 'El email ya está en uso.';
         default:
           return 'Error desconocido.';
       }
